@@ -14,6 +14,16 @@ url_download1 = 'https://www.bilibili.com/video/{}'
 url_download2 = 'https://www.bilibili.com/video/{}?p={}'
 
 
+def replace_title(title: str):
+    t = title
+
+    sign = '.,`~!@#$%^&*()\'\"，。/《》？?；‘’：“”、【】=——！·（）'
+    
+    log(type(t))
+    for s in sign:
+        t = t.replace(s, '_')
+    return t
+
 def check_multi_p(data):
     d = data
     count = 0
@@ -22,7 +32,7 @@ def check_multi_p(data):
         bvid = p['bvid']
         p['url'] = list()
         p['name'] = list()
-        p['title'] = p['title'].replace(',', ' ')
+        p['title'] = replace_title(p['title'])
 
         content = get_content(api_p.format(bvid), settings=SETTINGS)
         info = js_get_post_info(content)
@@ -46,20 +56,35 @@ def check_multi_p(data):
     return d
 
 
+def collect_data(data):
+    d = data
+    output_data = list()
+
+    for p in d:
+
+        author = p['author']
+        user_id = p['mid']
+        created_time = p['created']
+        url_list = p['url']
+        names = p['name']
+
+        for i in range(len(url_list)):
+            cell = f"{author},{user_id},{created_time},{names[i]},{url_list[i]}\n"
+            output_data.append(cell)
+
+    return output_data
+
+
 def dump_to_csv(data):
     time.sleep(5)
     log('Prepare to dump all the data')
 
     ds = data
     with open(f'{ds[0]["mid"]}.csv', 'w', encoding='utf-8-sig') as f:
-        for d in ds:
-            info_list = [d['author'], str(d['mid']), str(d['created'])]
-            for i in range(len(d['url'])):
-                line = ','.join((*info_list, d['name'][i], d['url'][i])) + '\n'
-
-                f.write(line)
-                log(line)
-                # time.sleep(0.25)
+        for line in collect_data(ds):
+            f.write(line)
+            log(line)
+            # time.sleep(0.25)
 
 
 def get_posts(up_id):
@@ -87,7 +112,7 @@ def get_posts(up_id):
 
 
 def app():
-    up_id = input('User ID: ')
+    up_id = '221848257'
 
     list_posts = get_posts(up_id)
     data = check_multi_p(list_posts)
@@ -99,6 +124,7 @@ def app():
 
 if __name__ == '__main__':
     print('*' * 30)
-    while 1:
-        app()
+    app()
+    # a = replace_title('养一只澳, 洲鸵鸟是什么体验（2）我终于教会他吃蔬菜啦')
+    log(a)
     print('*' * 30)

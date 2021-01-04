@@ -22,7 +22,7 @@ def js_get_posts(js_raw):
     jr = js_raw
     jr_parsed = js.loads(jr, encoding='utf-8')
 
-    posts = jr_parsed['data']['list']['vlist']\
+    posts = jr_parsed['data']['list']['vlist']
     
     return posts
 

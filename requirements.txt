@@ -1,4 +1,3 @@
-pymongo==3.11.0
 requests==2.24.0
 pyinstaller==4.0
-youtube-dl==2020.11.29ssssssssssssssssssssssssssssssssss
+youtube-dl==2020.11.29
