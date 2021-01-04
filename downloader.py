@@ -12,11 +12,12 @@ class MyLogger(object):
         pass
 
     def warning(self, msg):
-        log(msg)
+        # log(msg)
+        pass
 
     def error(self, msg):
         log(msg)
-        ydownload(self.url, self.name)
+        return ydownload(self.url, self.name)
 
 
 def my_hook(d):
@@ -35,7 +36,7 @@ def my_hook(d):
 def ydownload(url_list, name=None):
 
     if name is not None:
-        path = f'.\\downloads\\{name}'
+        path = f'.\\downloads\\{name}.%(ext)s'
     else:
         path = '.\\downloads\\%(title)s-%(id)s.%(ext)s'
 
@@ -43,8 +44,8 @@ def ydownload(url_list, name=None):
         'format': 'bestaudio/best',
         'logger': MyLogger(url_list),
         'progress_hooks': [my_hook],
-        'sleep_interval': 20,
-        'max_sleep_interval': 60,
+        'sleep_interval': 5,
+        'max_sleep_interval': 10,
         'outtmpl': path,
         'ignoreerrors': True,
     }
