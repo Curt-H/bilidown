@@ -25,7 +25,12 @@ def my_hook(d):
     if d['status'] == 'finished':
         log(f'{d["filename"]} dowloaded')
 
-def ydownload(url_list):
+def ydownload(url_list,name=None):
+
+    if name is not None:
+        path = f'.\\downloads\\{name}'
+    else:
+        path = '.\\downloads\\%(title)s-%(id)s.%(ext)s'
 
     ydl_opts = {
         'format': 'bestaudio/best',
@@ -33,7 +38,7 @@ def ydownload(url_list):
         'progress_hooks': [my_hook],
         'sleep_interval': 20,
         'max_sleep_interval': 60,
-        'outtmpl': '.\\downloads\\%(title)s-%(id)s.%(ext)s'
+        'outtmpl': path
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url_list])
