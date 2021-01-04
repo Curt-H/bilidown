@@ -5,7 +5,10 @@ from videolist import app
 if __name__ == "__main__":
     fname = input('please input user ID: ')
 
-    app(fname)
+    from os.path import exists
+
+    if not exists(f'{fname}.csv'):
+        app(fname)
 
     fname += '.csv'
 
