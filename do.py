@@ -13,8 +13,10 @@ if __name__ == "__main__":
             v = v.strip()
 
             log(v)
-            url = v.split(',')[4]
-            ydownload(url)
+            v = v.split(',')
+            url = v[4]
+            name = f'{v[0]}-{v[2]}-{v[5]}'
+            ydownload(url, name)
         log('----------END----------')    
 
             

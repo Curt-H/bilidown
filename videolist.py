@@ -50,6 +50,8 @@ def check_multi_p(data):
 
             count += 1
             log(f'{count} Check the {bvid} P{i} ')
+        
+        p['new_title'] = p['name']
         time.sleep(1)
 
     log(f'Get {count} videos')
@@ -67,9 +69,10 @@ def collect_data(data):
         created_time = p['created']
         url_list = p['url']
         names = p['name']
+        new_title = p['new_title']
 
         for i in range(len(url_list)):
-            cell = f"{author},{user_id},{created_time},{names[i]},{url_list[i]}\n"
+            cell = f"{author},{user_id},{created_time},{names[i]},{url_list[i]},{new_title[i]}\n"
             output_data.append(cell)
 
     return output_data
