@@ -114,8 +114,8 @@ def get_posts(up_id):
     return posts
 
 
-def app():
-    up_id = '221848257'
+def app(user_id):
+    up_id = user_id
 
     list_posts = get_posts(up_id)
     data = check_multi_p(list_posts)

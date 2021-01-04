@@ -1,8 +1,12 @@
 from utils import log
 from downloader import ydownload
+from videolist import app
 
 if __name__ == "__main__":
     fname = input('please input user ID: ')
+
+    app(fname)
+
     fname += '.csv'
 
     info = list()
