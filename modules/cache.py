@@ -10,9 +10,19 @@ from hashlib import sha256
 
 def get_content(url, **kwargs):
     """
-    Get content from url or cache
-    :param url: string, 网址
-    :return: 返回网页页面的HTML代码(coding: utf-8)
+    Request url content 
+    Parameters
+    ----------
+    url: str
+        request url
+    kwargs: dict
+        contains all the setting request package needed
+        such as proxy, headers and others
+
+    Return
+    ----------
+    content: str
+        page HTML code(coding: utf-8)
     """
     u = url
     settings = kwargs['settings']
