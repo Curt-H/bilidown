@@ -131,3 +131,6 @@ log.txt
 *.csv
 *.txt
 test.py
+
+# vscode
+.vscode/
