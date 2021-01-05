@@ -1,41 +1,81 @@
 # coding=utf-8
 import json as js
-from utils import log
+# from utils import log
+
 
 def js_page_count(js_raw):
+    '''
+    Analyse bilibili UP post api and generate UP post page count
+    Parameters:
+    ----------------
+    js_raw: string
+        raw UP post json data from bilibili api, page 1
+    Return:
+    ----------------
+        the page number of UP post
+    '''
     jr = js_raw
 
+    # transfer json string into dict
     jr_parsed = js.loads(jr, encoding='utf-8')
 
     post_count = jr_parsed['data']['page']['count']
     log(f'Total {post_count} posts')
 
+    # Acroding to bilibili standard, there are 30 post on each page
     pages = post_count // 30
 
     # if count is 31, the page need to add 1
     if post_count % 30 != 0:
         pages += 1
-    
+
     return pages
 
+
 def js_get_posts(js_raw):
+    '''
+    Analyse the UP post json data to get UP posts info
+    Parameters:
+    ----------------
+    js_raw: string
+        data from bilibili UP post api, json format
+    Return:
+    ----------------
+    posts: list
+        a dict list contains all the video information        
+    '''
     jr = js_raw
     jr_parsed = js.loads(jr, encoding='utf-8')
 
+    # 'vlist' means video list, which contains all we need
     posts = jr_parsed['data']['list']['vlist']
-    
+
     return posts
 
+
 def js_get_post_info(js_raw):
+    '''
+    Parse the singo 
+    Parameters:
+    ----------------
+    js_raw: str
+        response from bilibili api, json format
+        https://api.bilibili.com/x/player/pagelist?bvid=xxxxxxx&jsonp=jsonp
+    Return:
+    ----------------
+    info: list
+        list of dicts contain single video information
+        If the video contains multi p, the list length is bigger than 1
+    '''
     jr = js_raw
     jr_parsed = js.loads(jr, encoding='utf-8')
 
     info = jr_parsed['data']
     return info
-    
+
 
 if __name__ == "__main__":
     p = '{"code":0,"message":"0","ttl":1,"data":[{"cid":12946886,"page":1,"from":"vupload","part":"天台，初次见面","duration":684,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946887,"page":2,"from":"vupload","part":"面呢","duration":822,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946888,"page":3,"from":"vupload","part":"从两国骑车回家","duration":838,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946889,"page":4,"from":"vupload","part":"你心心念念的人，生活在高马","duration":1644,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946890,"page":5,"from":"vupload","part":"车底下的猫","duration":600,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946891,"page":6,"from":"vupload","part":"朝着天空树骑车上学","duration":990,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946892,"page":7,"from":"vupload","part":"语言学校的，文娱表演？","duration":1190,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946893,"page":8,"from":"vupload","part":"被四只猫盯住了","duration":1080,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946894,"page":9,"from":"vupload","part":"深夜问答","duration":1106,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946895,"page":10,"from":"vupload","part":"去打室内棒球","duration":840,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946896,"page":11,"from":"vupload","part":"骑车回家经过上野","duration":1060,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946897,"page":12,"from":"vupload","part":"银座的无印良品","duration":1038,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946898,"page":13,"from":"vupload","part":"一起看日出","duration":1043,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946899,"page":14,"from":"vupload","part":"谷中银座","duration":825,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946900,"page":15,"from":"vupload","part":"周六的根津神社","duration":1321,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946901,"page":16,"from":"vupload","part":"刮胡子（？","duration":795,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946902,"page":17,"from":"vupload","part":"骑车回家经过莺谷","duration":1038,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946903,"page":18,"from":"vupload","part":"工作结束吉祥寺散步","duration":1021,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946904,"page":19,"from":"vupload","part":"看天空树，在底下","duration":1160,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946905,"page":20,"from":"vupload","part":"自行车被撞坏了，买汤圆","duration":1191,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946906,"page":21,"from":"vupload","part":"有一个不喜欢的同学","duration":1061,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946907,"page":22,"from":"vupload","part":"天台夜谈","duration":807,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946908,"page":23,"from":"vupload","part":"测试篇完结","duration":270,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12949248,"page":24,"from":"vupload","part":"开始用稳定器了","duration":885,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946910,"page":25,"from":"vupload","part":"去新的学校拍证件照，426问好","duration":987,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946911,"page":26,"from":"vupload","part":"426的拍摄花絮","duration":997,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946912,"page":27,"from":"vupload","part":"最后一次从两国骑回家","duration":1068,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946913,"page":28,"from":"vupload","part":"鸡蛋便当","duration":1475,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946914,"page":29,"from":"vupload","part":"阴天的荒川","duration":831,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946915,"page":30,"from":"vupload","part":"语言学校毕业典礼","duration":701,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946916,"page":31,"from":"vupload","part":"到同学家吃火锅","duration":2445,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946917,"page":32,"from":"vupload","part":"帮同学装柜子","duration":1170,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946918,"page":33,"from":"vupload","part":"武藏境的工作","duration":1028,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946919,"page":34,"from":"vupload","part":"九段下的樱花","duration":1597,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946920,"page":35,"from":"vupload","part":"东京塔","duration":1872,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":13204177,"page":36,"from":"vupload","part":"曼古（为什么会在这儿呢","duration":2858,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":13016646,"page":37,"from":"vupload","part":"修学旅行","duration":1251,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12961622,"page":38,"from":"vupload","part":"摄影学校开学了","duration":1541,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12961623,"page":39,"from":"vupload","part":"筑地市场","duration":1811,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12961624,"page":40,"from":"vupload","part":"收到了教材","duration":926,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12961625,"page":41,"from":"vupload","part":"平静生活","duration":549,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12961626,"page":42,"from":"vupload","part":"路旁的哥斯拉","duration":1041,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12961627,"page":43,"from":"vupload","part":"气桑（双马尾初登场","duration":887,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12961629,"page":44,"from":"vupload","part":"日本的宜家","duration":1257,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12961630,"page":45,"from":"vupload","part":"阴天，秋天还是柴犬？","duration":865,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12961631,"page":46,"from":"vupload","part":"手办风云","duration":751,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12961632,"page":47,"from":"vupload","part":"更新完签证唱个歌儿","duration":881,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12961633,"page":48,"from":"vupload","part":"第二集的面在这儿","duration":1038,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957224,"page":49,"from":"vupload","part":"20岁生日","duration":1042,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957225,"page":50,"from":"vupload","part":"我要上央视了？","duration":781,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957226,"page":51,"from":"vupload","part":"智齿痛","duration":1516,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957227,"page":52,"from":"vupload","part":"新宿御苑以及气桑和靖国神社","duration":1270,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957228,"page":53,"from":"vupload","part":"花火和薯条","duration":1986,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957229,"page":54,"from":"vupload","part":"寻找深圳","duration":849,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957230,"page":55,"from":"vupload","part":"深圳永不开门","duration":951,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957231,"page":56,"from":"vupload","part":"气桑和猫咖啡","duration":1014,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957232,"page":57,"from":"vupload","part":"到小王家，做客？","duration":1312,"vid":"","weblink":"","dimension":{"width":1080,"height":608,"rotate":0}},{"cid":12957233,"page":58,"from":"vupload","part":"逃课漫步，好想钓鱼啊","duration":1302,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946945,"page":59,"from":"vupload","part":"繁忙的一天（五月天在武道馆","duration":1242,"vid":"","weblink":"","dimension":{"width":1080,"height":608,"rotate":0}},{"cid":12946947,"page":60,"from":"vupload","part":"要不要参加非诚勿扰","duration":1272,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957234,"page":61,"from":"vupload","part":"荒川游乐园，碰到小王","duration":1282,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957235,"page":62,"from":"vupload","part":"去新大久保交房租，路过网吧","duration":1273,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957236,"page":63,"from":"vupload","part":"北区王子有座山","duration":1491,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957237,"page":64,"from":"vupload","part":"我的学园祭","duration":1048,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957238,"page":65,"from":"vupload","part":"学校运动会（只有一个运动","duration":970,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957239,"page":66,"from":"vupload","part":"涩谷交叉路口","duration":880,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957240,"page":67,"from":"vupload","part":"龙猫在琦玉县","duration":2076,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957241,"page":68,"from":"vupload","part":"气桑和426，我的同学","duration":1320,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957242,"page":69,"from":"vupload","part":"从大久保走到新宿","duration":632,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957243,"page":70,"from":"vupload","part":"百年东京站","duration":1264,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12957244,"page":71,"from":"vupload","part":"池袋吃烤鱼","duration":1096,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946959,"page":72,"from":"vupload","part":"得到两个橙子","duration":926,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12949250,"page":73,"from":"vupload","part":"到川崎拿镜头","duration":1697,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":13016647,"page":74,"from":"vupload","part":"想爬东京塔的楼梯","duration":885,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":13016648,"page":75,"from":"vupload","part":"再走过银座和秋叶原","duration":1381,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":13016649,"page":76,"from":"vupload","part":"如何拍摄你的生活记录","duration":1111,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946961,"page":77,"from":"vupload","part":"一周年纪念","duration":1526,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946962,"page":78,"from":"vupload","part":"什么也没有发生的一天","duration":946,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12951991,"page":79,"from":"vupload","part":"牙龈出血","duration":987,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12951992,"page":80,"from":"vupload","part":"溜冰","duration":1056,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":13016650,"page":81,"from":"vupload","part":"买啦外星人","duration":1553,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":13016651,"page":82,"from":"vupload","part":"小新的餐厅","duration":708,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12951993,"page":83,"from":"vupload","part":"极速前进剧组来日本了","duration":1091,"vid":"","weblink":"","dimension":{"width":1080,"height":608,"rotate":0}},{"cid":12949251,"page":84,"from":"vupload","part":"好像一尘不变的家附近","duration":1032,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12949252,"page":85,"from":"vupload","part":"多摩川也是川","duration":1107,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":13016652,"page":86,"from":"vupload","part":"戴上柯南的眼镜","duration":290,"vid":"","weblink":"","dimension":{"width":1080,"height":608,"rotate":0}},{"cid":12946968,"page":87,"from":"vupload","part":"皇居","duration":1297,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946969,"page":88,"from":"vupload","part":"恐龙博物馆","duration":1140,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946970,"page":89,"from":"vupload","part":"另一个天台，始终忙碌着的浅草","duration":1202,"vid":"","weblink":"","dimension":{"width":1080,"height":608,"rotate":0}},{"cid":12946971,"page":90,"from":"vupload","part":"周末的六本木","duration":884,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12949253,"page":91,"from":"vupload","part":"陡然一日","duration":598,"vid":"","weblink":"","dimension":{"width":1080,"height":608,"rotate":0}},{"cid":13016653,"page":92,"from":"vupload","part":"当代红白机","duration":665,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946974,"page":93,"from":"vupload","part":"总该去下水族馆","duration":1484,"vid":"","weblink":"","dimension":{"width":1080,"height":608,"rotate":0}},{"cid":12949255,"page":94,"from":"vupload","part":"运动一下","duration":1072,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12949256,"page":95,"from":"vupload","part":"开始工作了","duration":978,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946977,"page":96,"from":"vupload","part":"买自行车","duration":801,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12949257,"page":97,"from":"vupload","part":"东京电影节","duration":928,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12946979,"page":98,"from":"vupload","part":"荒川边的homestay","duration":1059,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}},{"cid":12961634,"page":99,"from":"vupload","part":"不想当社长啊","duration":2102,"vid":"","weblink":"","dimension":{"width":640,"height":360,"rotate":0}}]}'
-    o = js.loads(p, encoding='utf-8')
-    li = o['data']
-    print(len(li))
+    q = js_get_post_info(p)
+    for i in q:
+        print(i)
