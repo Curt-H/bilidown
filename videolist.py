@@ -14,17 +14,39 @@ url_download1 = 'https://www.bilibili.com/video/{}'
 url_download2 = 'https://www.bilibili.com/video/{}?p={}'
 
 
-def replace_title(title: str):
+def remove_symbol(title: str):
+    '''
+    Remove the symbol in the string
+    ----------------
+    Parameters:
+    ----------------
+    title: str
+    ----------------
+    Return:
+    ----------------
+    t: str
+    '''
     t = title
 
+    # symbol dict
     sign = '.,`~!@#$%^&*()\'\"，。/《》？?；‘’：“”、【】=——！·（）'
     
-    log(type(t))
     for s in sign:
         t = t.replace(s, '_')
     return t
 
 def check_multi_p(data):
+    '''
+    use bilibili api to get post information to make sure if post has more than one video
+    ----------------
+    Parameters:
+    data: dict
+        posts information parsed from bilibili UP posts list 
+    ----------------
+    Return:
+        
+    ----------------
+    '''
     d = data
     count = 0
 
@@ -32,11 +54,13 @@ def check_multi_p(data):
         bvid = p['bvid']
         p['url'] = list()
         p['name'] = list()
-        p['title'] = replace_title(p['title'])
+        p['title'] = remove_symbol(p['title'])
 
+        # use bilibili post api to make sure
         content = get_content(api_p.format(bvid), settings=SETTINGS)
         info = js_get_post_info(content)
 
+        # if post has more than one video
         for i in range(len(info)):
             if i == 0:
                 p['url'].append(url_download1.format(bvid))
@@ -91,6 +115,18 @@ def dump_to_csv(data):
 
 
 def get_posts(up_id):
+    '''
+    view UP posts page api to get UP's all posts infomation
+    ----------------
+    Parameters:
+    up_id: int
+        UP's bilibili's uid
+    ----------------
+    Return:
+    posts: list
+        a dict list, which contains all up post information
+    ----------------
+    '''
     uid = up_id
 
     # at first, search api to get the page number
@@ -109,25 +145,33 @@ def get_posts(up_id):
         log(f'Have load page{index}')
 
         index += 1
-        time.sleep(1)
+        time.sleep(0.5)
 
     return posts
 
 
-def app(user_id):
+def check_up_posts(user_id):
+    '''
+    check UP posts list, collect all the post information(title, created time, url) and dump them into csv file
+    filename is the UP uid
+    ----------------
+    Parameters:
+    userid: int
+        UP's bilibili's uid
+    ----------------
+    Return:
+
+    ----------------
+    '''
     up_id = user_id
 
-    list_posts = get_posts(up_id)
-    data = check_multi_p(list_posts)
+    post_list = get_posts(up_id)
+    video_list = check_multi_p(post_list)
 
-    dump_to_csv(data)
+    dump_to_csv(video_list)
 
 
 # from requests import *
 
 if __name__ == '__main__':
-    print('*' * 30)
-    app()
-    # a = replace_title('养一只澳, 洲鸵鸟是什么体验（2）我终于教会他吃蔬菜啦')
-    log(a)
-    print('*' * 30)
+    pass
