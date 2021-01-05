@@ -3,13 +3,11 @@ import sys
 
 
 def log(*args, **kwargs):
-    """
-    日志打印函数, 输入任意数据, 将其按特定格式打印出来并保存的根目录的log文件中
-    :param args: Any thing you want
-    :param kwargs:
-    :return: None
-    """
-    # time.time() 返回 unix time, 并将其转换为如下格式
+    '''
+    Log function
+    
+    '''
+    # time.time() get unix time and reformat
     time_format = '[%Y/%m/%d--%H:%M:%S]:'
     localtime = time.localtime(int(time.time()))
     formatted = time.strftime(time_format, localtime)
@@ -46,15 +44,39 @@ def dump_str(filename, content):
 
 
 def percent(x, y):
+    '''
+    caculate x/y in percent format
+    Parameters:
+    ----------------
+    x: double/int
+        numerator
+    y: double/int
+        denominator, cannot be 0            
+    Return:
+    ----------------
+    percent: int
+        x/y%    
+    '''
     p = round(x / y, 2) * 100
     percent = int(p)
+
     return percent
 
 
-def progress_bar(x, y, info='0', speed='Null'):
+def progress_bar(x, y, filesize='0', speed='Null'):
+    '''
+    porgress bar generator by which can display downloading progress and speed
+    Parameters:
+    ----------------
+    filesize: str
+    speed: str
+    Return:
+    ----------------
+    
+    '''
     print("\r", end="")
-    print(f"{info} MB Downloading Speed: {speed}K/S {percent(x, y)}: ",
-          "▋ " * (percent(x, y) // 5),
+    print(f"{filesize} MB Downloading Speed: {speed}K/S {percent(x, y)}: ",
+          "▋" * (percent(x, y) // 5),
           end="")
     sys.stdout.flush()
     time.sleep(0.5)
@@ -63,4 +85,6 @@ def progress_bar(x, y, info='0', speed='Null'):
 
 
 if __name__ == "__main__":
-    print('\r>'*20)
+    for i in range(1, 100):
+        for j in range(1, i):
+            progress_bar(i, j)

@@ -1,6 +1,6 @@
 # coding=utf-8
 import json as js
-# from utils import log
+from utils import log
 
 
 def js_page_count(js_raw):
