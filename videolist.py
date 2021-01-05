@@ -44,7 +44,7 @@ def check_multi_p(data):
         posts information parsed from bilibili UP posts list 
     ----------------
     Return:
-        
+
     ----------------
     '''
     d = data
@@ -102,7 +102,19 @@ def collect_data(data):
     return output_data
 
 
-def dump_to_csv(data):
+def dump_to_csv(name, data):
+    '''
+    write data into a csv file and make sure
+    ----------------
+    Parameters:
+    
+    ----------------
+    Return:
+    
+    ----------------
+    '''
+    fname = 
+
     time.sleep(5)
     log('Prepare to dump all the data')
 
@@ -174,4 +186,6 @@ def check_up_posts(user_id):
 # from requests import *
 
 if __name__ == '__main__':
-    pass
+    with open('test.csv', 'r', encoding='utf-8-sig') as f:
+
+        log(len(f.readlines()))
