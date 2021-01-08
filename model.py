@@ -1,6 +1,16 @@
 import json
+from  os.path import exists
+from os import makedirs
 from utils import log
 
+def check_folder_and_file_exists(fname)
+
+    if not exists('data'):
+        makedirs('data')
+
+    if not exists(f'data\\{fname}.json'):
+        with open(f'data\\{fname}.json','w', encoding='utf-8') as f:
+            pass
 
 class BaseModel(object):
     def __init__(self, up):
@@ -8,6 +18,9 @@ class BaseModel(object):
 
     @classmethod
     def all(cls, fname):
+
+        check_folder_and_file_exists(fname)
+
         with open(f'data\\{fname}.json', 'r', encoding='utf-8') as f:
 
             log(f'Load all data [{cls.__name__}]')
