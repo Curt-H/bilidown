@@ -3,9 +3,12 @@ from utils import log
 
 
 class BaseModel(object):
+    def __init__(self, up):
+        self.up = up
+
     @classmethod
-    def all(cls):
-        with open('data\\data.json', 'r', encoding='utf-8') as f:
+    def all(cls, fname):
+        with open(f'data\\{fname}.json', 'r', encoding='utf-8') as f:
 
             log(f'Load all data [{cls.__name__}]')
             c = f.read()
@@ -21,7 +24,7 @@ class BaseModel(object):
         return all_cls
 
     def save(self):
-        all_objects = self.all()
+        all_objects = self.all(self.up)
 
         log('Start save object')
         for o in all_objects:
@@ -39,9 +42,8 @@ class BaseModel(object):
 
 class Video(BaseModel):
     def __init__(self, form: dict):
-        super(Video, self).__init__()
+        super(Video, self).__init__(form.get('up'))
         self.bvid = form.get('bvid')
-        self.up = form.get('up')
         self.title = form.get('title')
         self.create = form.get('create')
         self.url = form.get('url')
