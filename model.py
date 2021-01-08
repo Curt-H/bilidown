@@ -19,7 +19,15 @@ def load(folder, fname):
 
     with open(f'{folder}\\{fname}.json', 'r', encoding='utf-8') as f:
         d = json.load(f)
+
     return d
+
+
+def dump(folder, fname, data):
+    check_folder_and_file_exists(folder, fname)
+
+    with open(f'{folder}\\{fname}.json', 'w', encoding='utf-8') as f:
+        json.dump(data, f)
 
 
 class BaseModel(object):
@@ -27,10 +35,12 @@ class BaseModel(object):
 
         self.up = up
 
-    # def add_up(self):
-    #     check_folder_and_file_exists('ups')
+    def add_up(self):
+        up_list = load('data', 'ups')
 
-    #     with open
+        if up_list is not list:
+            up_list = list()
+            log('UP list is not exists')
 
     @classmethod
     def all(cls, fname):
