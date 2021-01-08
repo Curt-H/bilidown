@@ -3,7 +3,7 @@ from  os.path import exists
 from os import makedirs
 from utils import log
 
-def check_folder_and_file_exists(fname)
+def check_folder_and_file_exists(fname):
 
     if not exists('data'):
         makedirs('data')
@@ -44,7 +44,7 @@ class BaseModel(object):
             if self.__dict__ == o.__dict__:
                 return 'NOT UNIQUE'
 
-        with open('data\\data.json', 'w+', encoding='utf-8') as f:
+        with open(f'data\\{self.up}.json', 'w+', encoding='utf-8') as f:
 
             all_objects.append(self)
             all_objects_dump = [o.__dict__ for o in all_objects]
