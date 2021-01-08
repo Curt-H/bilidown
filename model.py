@@ -10,7 +10,7 @@ def check_folder_and_file_exists(folder, fname):
         makedirs(folder)
 
     if not exists(f'{folder}\\{fname}.json'):
-        with open(f'{folder}\\{fname}.json', 'w', encoding='utf-8') as f:
+        with open(f'{folder}\\{fname}.json', 'w', encoding='utf-8'):
             pass
 
 
@@ -18,9 +18,13 @@ def load(folder, fname):
     check_folder_and_file_exists(folder, fname)
 
     with open(f'{folder}\\{fname}.json', 'r', encoding='utf-8') as f:
-        d = json.load(f)
-
-    return d
+        try:
+            d = json.load(f)
+        except json.decoder.JSONDecodeError as e:
+            log(f'[ERROR] {e.msg}')
+            return None
+        else:
+            return d
 
 
 def dump(folder, fname, data):
@@ -34,13 +38,17 @@ class BaseModel(object):
     def __init__(self, up):
 
         self.up = up
+        self.add_up()
 
     def add_up(self):
         up_list = load('data', 'ups')
 
-        if up_list is not list:
+        if up_list is None:
             up_list = list()
             log('UP list is not exists')
+
+        up_list.append(self.up)
+        dump('data', 'ups', up_list)
 
     @classmethod
     def all(cls, fname):
@@ -131,5 +139,3 @@ if __name__ == "__main__":
     a = Video(form)
     msg = a.save()
     log(msg)
-
-    a.import_to_csv()
