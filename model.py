@@ -1,25 +1,41 @@
 import json
-from  os.path import exists
+from os.path import exists
 from os import makedirs
 from utils import log
 
-def check_folder_and_file_exists(fname):
 
-    if not exists('data'):
-        makedirs('data')
+def check_folder_and_file_exists(folder, fname):
 
-    if not exists(f'data\\{fname}.json'):
-        with open(f'data\\{fname}.json','w', encoding='utf-8') as f:
+    if not exists(folder):
+        makedirs(folder)
+
+    if not exists(f'{folder}\\{fname}.json'):
+        with open(f'{folder}\\{fname}.json', 'w', encoding='utf-8') as f:
             pass
+
+
+def load(folder, fname):
+    check_folder_and_file_exists(folder, fname)
+
+    with open(f'{folder}\\{fname}.json', 'r', encoding='utf-8') as f:
+        d = json.load(f)
+    return d
+
 
 class BaseModel(object):
     def __init__(self, up):
+
         self.up = up
+
+    # def add_up(self):
+    #     check_folder_and_file_exists('ups')
+
+    #     with open
 
     @classmethod
     def all(cls, fname):
 
-        check_folder_and_file_exists(fname)
+        check_folder_and_file_exists('data', fname)
 
         with open(f'data\\{fname}.json', 'r', encoding='utf-8') as f:
 
@@ -56,6 +72,7 @@ class BaseModel(object):
 class Video(BaseModel):
     def __init__(self, form: dict):
         super(Video, self).__init__(form.get('up'))
+        self.upname = form.get('upname')
         self.bvid = form.get('bvid')
         self.title = form.get('title')
         self.create = form.get('create')
@@ -64,21 +81,22 @@ class Video(BaseModel):
         self.downloaded = form.get('downloaded', False)
         self.allow_download = form.get('allow_download', True)
 
-    def __to_csv(self):
-        r_list = list(
-            self.bvid,
-            self.up,
-            self.title,
-            self.create,
-            self.url,
-            self.name,
-            self.downloaded,
-            self.allow_download,
-        )
+    # @classmethod
+    # def import_to_csv(cls, up):
+    #     all_objects = cls.all(up)
 
-        r = ','.join(r_list)
+    #     with open(f'{up}.csv', 'w', encoding='utf-8-sig') as f:
+    #         for obj in all_objects:
 
-        return r
+    #             for v in obj.__dict__.values():
+    #                 line_list = [
+    #                     obj.up, obj.upname, obj.title, obj.name,
+    #                     obj.create, obj.url, obj.downloaded,
+    #                     obj.allow_download
+    #                 ]
+
+    #             line = ','.join(line_list) + '\n'
+    #             f.write(line)
 
 
 class test(object):
@@ -103,3 +121,5 @@ if __name__ == "__main__":
     a = Video(form)
     msg = a.save()
     log(msg)
+
+    a.import_to_csv()
