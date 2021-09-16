@@ -54,13 +54,14 @@ def ydownload(url_list, name=None):
 
 
 if __name__ == "__main__":
-    url = 'https://www.bilibili.com/video/11111'
+    while True:
+        url = input(">>>")
 
-    ydl_opts = {
-        'format': 'bestaudio/best',
-        'logger': MyLogger(url, None),
-        'progress_hooks': [my_hook],
-        'outtmpl': '.\\downloads\\%(title)s-%(id)s.%(ext)s'
-    }
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'logger': MyLogger(url, None),
+            'progress_hooks': [my_hook],
+            'outtmpl': '.\\downloads\\%(title)s-%(id)s.%(ext)s'
+        }
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
